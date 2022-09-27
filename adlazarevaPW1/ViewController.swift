@@ -7,6 +7,18 @@
 
 import UIKit
 
+class Animations {
+    static func shakeAnimation(on onView: UIView) {
+        let animation = CABasicAnimation(keyPath: "position")
+        animation.duration = 0.08
+        animation.repeatCount = 6
+        animation.autoreverses = true
+        animation.fromValue = NSValue(cgPoint: CGPoint(x: onView.center.x - 10, y: onView.center.y))
+        animation.toValue = NSValue(cgPoint: CGPoint(x: onView.center.x + 10, y: onView.center.y))
+        onView.layer.add(animation, forKey: "position")
+    }
+}
+
 extension UIColor {
     public convenience init?(hex: String) {
         let r, g, b, a: CGFloat
@@ -63,15 +75,21 @@ class ViewController: UIViewController {
         while set.count < views.count{
             set.insert(UIColor(hex: generateString())!)
         }
+        
+            
             UIView.animate(withDuration: 2,  animations: {
                 for view in self.views {
                     view.layer.cornerRadius=16
                     view.backgroundColor=set.popFirst()
                 }
+                for view in self.views{
+                    Animations.shakeAnimation(on: view)
+                }
             }){ completion in
                 button?.isEnabled = true
                            
         }
+    
         
     }
     
